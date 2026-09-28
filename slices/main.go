@@ -27,6 +27,7 @@ func main() {
 	// The first argument in append creates a copy of the source slice to which
 	// the subsequent elements are appended. This new slice is then returned.
 	// It is mandatory to assign the return value.
+	
 	z = append(z, 2, 3)
 	x = append(x, y...)
 
@@ -38,6 +39,7 @@ func main() {
 	// When we try to append to a slice that is full, the runtime allocates a new
 	// backing array of bigger capacity. All the elements of the slice are copied
 	// to the new array upon which thereafter append is applied.
+	
 	var seq []int
 	seq = append(seq, 2)
 	fmt.Println(len(seq), cap(seq))
@@ -52,8 +54,18 @@ func main() {
 	clear(x)
 	fmt.Println(x)
 
-	// Create slice from a slice using Slice Expressions.
-	v := []string{"a", "t", "a", "n", "u"}
-	v_prime := v[:3]
-	fmt.Println("v_prime:", v_prime)
+	// Create slices from a slice using slice expressions. Such slices do not create 
+	// a copy of the data, instead multiple variables share the same memory. That 
+	// means changing an element affects all who share it.
+	
+	chars := []string{"a", "t", "a", "n", "u"}
+	v1_chars := chars[:3]
+	v2_chars := chars[2:]
+	
+	chars[2] = "A"
+	v2_chars[2] = "U"
+	
+	fmt.Println("chars:", chars)
+	fmt.Println("v1_chars:", v1_chars)
+	fmt.Println("v2_chars:", v2_chars)
 }
