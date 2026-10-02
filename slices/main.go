@@ -6,6 +6,7 @@ import "slices"
 func main() {
 	// A slice literal is quite similar to an array, except only that
 	// we don't specify the size here. Slices grow on-demand!
+
 	var x = []int{3, 4, -1}
 	var y = []int{3: 3, 6: 2}
 
@@ -59,26 +60,26 @@ func main() {
 	// means changing an element affects all who share it.
 
 	chars := []string{"a", "t", "a", "n", "u"}
-	v1_chars := chars[:3]
-	v2_chars := chars[2:]
+	newChars := chars[:3]
+	newChars2 := chars[2:]
 
 	chars[2] = "A"
-	v2_chars[2] = "U"
+	newChars2[2] = "U"
 
-	fmt.Println("chars:", chars)
-	fmt.Println("v1_chars:", v1_chars)
-	fmt.Println("v2_chars:", v2_chars)
+	fmt.Println("\nchars:", chars)
+	fmt.Println("newChars:", newChars)
+	fmt.Println("newChars2:", newChars2)
 
-	// Capacity of a subslice is the capacity of the original slice, minus the starting 
-	// offset of the subslice. When their capacities are equal, the elements in the 
-	// original slice after the end of the subslice, including the unused capacity, are 
-	// shared by both the slices. 
-	
+	// Capacity of a subslice is the capacity of the original slice, minus the starting
+	// offset of the subslice. When their capacities are equal, the elements in the
+	// original slice after the end of the subslice, including the unused capacity, are
+	// shared by both the slices.
+
 	c := []int{3, 6, -1, 2}
 	b := c[:2]
 	b = append(b, 9)
 
-	// A full slice expression specifies the last position from the original slice's 
+	// A full slice expression specifies the last position from the original slice's
 	// capacity available to the subslice. If we make the capacity equal to the length
 	// of the subslice, append creates a new backing array, leaving the original slice
 	// unaffected.
@@ -91,4 +92,31 @@ func main() {
 
 	fmt.Println("\na:", a)
 	fmt.Println("Capacity of a =", cap(a))
+
+	// The copy function creates a subslice independent of the original slice.
+	// It returns the number of elements copied to the destination slice.
+
+	p := []int{4, 5, -2}
+	q := make([]int, 2)
+	count := copy(q, p[1:])
+
+	fmt.Println(q, count)
+
+	// We can use a slice expression to convert an array into a slice. The shared 
+	// memory properties are applicable here. On the other hand, a type conversion 
+	// is used to convert a slice (or a subset of it) to an array of the same type. 
+	// In this case, the array is provided with new memory, so modifying the slice 
+	// does not affect the array. 
+
+	arr := [4]int{3: -1}
+	arrSlice := arr[:]
+
+	xSlice := []int{1: -3, 4: 2}
+	xArr := [5]int(xSlice)
+	shortArr := [2]int(xSlice)
+	
+	xSlice = append(xSlice, -9)
+
+	fmt.Println("\nSliced Array:", arrSlice)
+	fmt.Println("Slices as Arrays:", xArr, shortArr)
 }
